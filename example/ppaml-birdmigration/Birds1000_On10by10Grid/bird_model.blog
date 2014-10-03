@@ -1,16 +1,47 @@
+// defining the locations 
+type Location; 
+distinct Location l[100];
+// parameters
+random Real beta1 ~ UniformReal(3, 13);
+random Real beta2 ~ UniformReal(3, 13);
+random Real beta3 ~ UniformReal(3, 13);
+random Real beta4 ~ UniformReal(3, 13);
+// features
+fixed RealMatrix F1(Location src) =
+  loadRealMatrix("F1.txt", toInt(src));
+fixed RealMatrix F2(Location src) =
+  loadRealMatrix("F2.txt", toInt(src));
+fixed RealMatrix F3(Location src, Timestep t) =
+  loadRealMatrix("F3.txt", toInt(src) + toInt(t) * 16);
+fixed RealMatrix F4(Location src) =
+  loadRealMatrix("F4.txt", toInt(src));
+
+// flow probabilities
+random RealMatrix probs(Location src, Timestep t) ~ 
+  exp(beta1 * F1(src) + beta2 * F2(src) + beta3 * F3(src,t)
+  	+ beta4 * F4(src));
+
 // initial value for the birds 
-fixed RealMatrix initial_value = [1000,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];
+fixed RealMatrix initial_value = 
+  [1000,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+   1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+   1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+   1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];
+
 // number of birds at location loc and timestep t 
 random Integer birds(Location loc, Timestep t) ~ 
-    if t%20==@0 then toInt(initial_value[loc_to_int(loc)]) 
-    else toInt(sum({ inflow(src, loc, prev(t)) for Location src })) 
-; 
+  if t % 20 == @0 then toInt(initial_value[toInt(loc)]) 
+  else toInt(sum({ inflow(src, loc, prev(t)) for Location src })); 
+
 // the vector of outflow from source(src) to all other locations 
-random RealMatrix outflow_vector(Location src,Timestep t) ~ Multinomial(birds(src,t), transpose(probs(src,t))) ; 
+random RealMatrix outflow_vector(Location src, Timestep t) ~ 
+  Multinomial(birds(src, t), transpose(probs(src, t))); 
+
 // inflow from source(src) to destination(dst) 
-random Integer inflow(Location src, Location dst, Timestep t) ~ toInt(outflow_vector(src,t)[loc_to_int(dst)]); 
+random Integer inflow(Location src, Location dst, Timestep t) ~ 
+  toInt(outflow_vector(src,t)[toInt(dst)]); 
+
 // Noisy Observations defined through Poisson distribution 
 random Integer NoisyObs(Location loc, Timestep t) ~
-	if birds(loc,t) == 0 then Poisson(0.01)
-   else Poisson(birds(loc,t))
-;
+  if birds(loc, t) == 0 then Poisson(0.01)
+  else Poisson(birds(loc, t));
