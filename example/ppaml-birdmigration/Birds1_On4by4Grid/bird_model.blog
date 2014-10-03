@@ -1,3 +1,6 @@
+// defining the locations 
+type Location; 
+distinct Location l[16];
 // parameters
 random Real beta1 ~ UniformReal(3, 13);
 random Real beta2 ~ UniformReal(3, 13);
