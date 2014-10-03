@@ -11998,4 +11998,7 @@ query outflow_vector(l[96],@119);
 query outflow_vector(l[97],@119);
 query outflow_vector(l[98],@119);
 query outflow_vector(l[99],@119);
-query beta(@60);
+query round(beta1 * 100) / 100.0;
+query round(beta2 * 100) / 100.0;
+query round(beta3 * 100) / 100.0;
+query round(beta4 * 100) / 100.0;
