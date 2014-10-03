@@ -12,7 +12,7 @@ fixed RealMatrix F1(Location src) =
 fixed RealMatrix F2(Location src) =
   loadRealMatrix("F2.txt", toInt(src));
 fixed RealMatrix F3(Location src, Timestep t) =
-  loadRealMatrix("F3.txt", toInt(src) + toInt(t) * 16);
+  loadRealMatrix("F3.txt", toInt(src) + toInt(t) * 100);
 fixed RealMatrix F4(Location src) =
   loadRealMatrix("F4.txt", toInt(src));
 
@@ -23,10 +23,10 @@ random RealMatrix probs(Location src, Timestep t) ~
 
 // initial value for the birds 
 fixed RealMatrix initial_value = 
-  [1000000,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+  hstack(1000000,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-   1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];
+   1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1);
 
 // number of birds at location loc and timestep t 
 random Integer birds(Location loc, Timestep t) ~ 

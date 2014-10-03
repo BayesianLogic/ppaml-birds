@@ -23,7 +23,7 @@ random RealMatrix probs(Location src, Timestep t) ~
 
 // initial value for the birds 
 fixed RealMatrix initial_value =
-  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; 
+  hstack(1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0); 
 
 // number of birds at location loc and timestep t 
 random Integer birds(Location loc, Timestep t) ~ 
