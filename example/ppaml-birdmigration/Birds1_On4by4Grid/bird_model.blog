@@ -22,21 +22,21 @@ random RealMatrix probs(Location src, Timestep t) ~
   	+ beta4 * F4(src));
 
 // initial value for the birds 
-fixed RealMatrix initial_value =
-  hstack(1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0); 
+fixed Integer[] initial_value =
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; 
 
 // number of birds at location loc and timestep t 
 random Integer birds(Location loc, Timestep t) ~ 
-  if t % 20 == @0 then toInt(initial_value[toInt(loc)]) 
+  if t % 20 == @0 then initial_value[toInt(loc)]
   else toInt(sum({ inflow(src, loc, prev(t)) for Location src })); 
 
 // the vector of outflow from source(src) to all other locations 
-random RealMatrix outflow_vector(Location src, Timestep t) ~ 
+random Integer[] outflow_vector(Location src, Timestep t) ~ 
   Multinomial(birds(src, t), transpose(probs(src, t))); 
 
 // inflow from source(src) to destination(dst) 
 random Integer inflow(Location src, Location dst, Timestep t) ~ 
-  toInt(outflow_vector(src,t)[toInt(dst)]); 
+  outflow_vector(src,t)[toInt(dst)]; 
 
 // Noisy Observations defined through Poisson distribution 
 random Integer NoisyObs(Location loc, Timestep t) ~
