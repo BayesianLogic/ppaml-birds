@@ -1,7 +1,7 @@
 #!/bin/bash
 
 BLOG_HOME=../../../blog
-time "$BLOG_HOME"/blog -r -e blog.engine.LiuWestFilter \
+time JAVA_OPTS="-Xmx32G" "$BLOG_HOME"/blog -r -e blog.engine.LiuWestFilter \
   bird_model.blog \
   bird_obs.blog \
   bird_queries.blog \
