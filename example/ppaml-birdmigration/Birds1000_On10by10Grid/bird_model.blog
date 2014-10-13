@@ -31,15 +31,11 @@ fixed Integer[] initial_value =
 // number of birds at location loc and timestep t 
 random Integer birds(Location loc, Timestep t) ~ 
   if t % 20 == @0 then initial_value[toInt(loc)]
-  else toInt(sum({ inflow(src, loc, prev(t)) for Location src })); 
+  else toInt(sum({ outflow_vector(src, prev(t))[toInt(loc)] for Location src })); 
 
 // the vector of outflow from source(src) to all other locations 
 random Integer[] outflow_vector(Location src, Timestep t) ~ 
   Multinomial(birds(src, t), transpose(probs(src, t))); 
-
-// inflow from source(src) to destination(dst) 
-random Integer inflow(Location src, Location dst, Timestep t) ~ 
-  outflow_vector(src,t)[toInt(dst)]; 
 
 // Noisy Observations defined through Poisson distribution 
 random Integer NoisyObs(Location loc, Timestep t) ~
